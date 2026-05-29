@@ -1,27 +1,41 @@
 #!/bin/bash
 
-# The correct path to Roblox textures
+# --- Setup Paths ---
 UI_DIR="/Applications/Roblox.app/Contents/Resources/content/textures/Cursors/KeyboardMouse"
-BACKUP_DIR="/Downloads"
-
-# The correct path to YOUR Documents folder
 FIND_DIR="$HOME/Downloads"
+BACKUP_PATH="$FIND_DIR/backupCursor"
 
-if [ ! -d "$BACKUP_DIR/backupCursor" ]; then
-    echo "Backup doesnt exist."
-    echo "Making now!"
-    mkdir "$BACKUP_DIR/backupCursor"
-    # rm -rf "$BACKUP_DIR/backupCursor"
-fi
-
-read -p "Enter your name: " continuerun
-
-if [ ! -v continuerun ]; then
-  echo "well, crap"
-  else
-    # Running the copy commands
-    sudo cp "$FIND_DIR/cursor.png" "$UI_DIR/ArrowFarCursor.png"
-    sudo cp "$FIND_DIR/cursor.png" "$UI_DIR/ArrowCursor.png"
+# 1. Check if Backup exists; if not, create it and COPY original files into it
+if [ ! -d "$BACKUP_PATH" ]; then
+    echo "Backup doesn't exist. Creating backup now..."
+    mkdir -p "$BACKUP_PATH"
     
-    echo "--- Finished! Restart Roblox to see changes. ---"
+    # Copy the original Roblox cursors to your backup folder
+    cp "$UI_DIR/ArrowFarCursor.png" "$BACKUP_PATH/" 2>/dev/null
+    cp "$UI_DIR/ArrowCursor.png" "$BACKUP_PATH/" 2>/dev/null
+    echo "Original textures saved to $BACKUP_PATH"
+else
+    echo "Backup folder already exists. Skipping backup step."
 fi
+
+echo "---"
+
+# 2. Ask to continue with the switch
+read -p "Do you want to apply the custom cursor? (y/n): " choice
+
+case "$choice" in 
+  y|Y|yes|Yes ) 
+    # Check if your custom cursor actually exists in Downloads
+    if [ -f "$FIND_DIR/cursor.png" ]; then
+        echo "Applying custom cursors..."
+        sudo cp "$FIND_DIR/cursor.png" "$UI_DIR/ArrowFarCursor.png"
+        sudo cp "$FIND_DIR/cursor.png" "$UI_DIR/ArrowCursor.png"
+        echo "--- Finished! Restart Roblox to see changes. ---"
+    else
+        echo "Error: Could not find 'cursor.png' in $FIND_DIR"
+    fi
+    ;;
+  * )
+    echo "Operation cancelled. No changes made."
+    ;;
+esac
