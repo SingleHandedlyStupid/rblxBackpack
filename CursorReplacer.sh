@@ -7,7 +7,7 @@ BACKUP_PATH="$FIND_DIR/backupCursor"
 
 # 1. Check if Backup exists; if not, create it and COPY original files into it
 if [ ! -d "$BACKUP_PATH" ]; then
-    echo "Backup doesn't exist. Creating backup now..."
+    echo "Backup doesn't exist. Creating backup now... 2"
     mkdir -p "$BACKUP_PATH"
     
     # Copy the original Roblox cursors to your backup folder
