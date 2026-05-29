@@ -15,7 +15,7 @@ else
 
 # 2. Ask to continue with the switch (Split into echo + read for reliability)
 sleep 1
-echo -r -p "Continuing!"
+echo "Continuing!"
 
 echo "------------------------------------------------"
 
