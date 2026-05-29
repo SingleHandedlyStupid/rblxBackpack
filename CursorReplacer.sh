@@ -18,10 +18,13 @@ else
     echo "Backup folder already exists. Skipping backup step."
 fi
 
-echo "---"
+echo "------------------------------------------------"
 
-# 2. Ask to continue with the switch
-read -p "Do you want to apply the custom cursor? (y/n): " choice
+# 2. Ask to continue with the switch (Split into echo + read for reliability)
+echo -n "Do you want to apply the custom cursor? (y/n): "
+read choice
+
+echo "------------------------------------------------"
 
 case "$choice" in 
   y|Y|yes|Yes ) 
@@ -33,6 +36,7 @@ case "$choice" in
         echo "--- Finished! Restart Roblox to see changes. ---"
     else
         echo "Error: Could not find 'cursor.png' in $FIND_DIR"
+        echo "Please make sure your new cursor is named exactly 'cursor.png' inside your Downloads folder."
     fi
     ;;
   * )
