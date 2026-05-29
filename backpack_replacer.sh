@@ -1,59 +1,45 @@
 #!/bin/bash
 
-# 1. The exact folder inside Roblox where the backpack files live
-TARGET_DIR="/Applications/Roblox.app/Contents/Resources/content/textures/ui/backpack"
+# --- SETTINGS & PATHS ---
+# Path 1: The original UI folder
+UI_DIR="/Applications/Roblox.app/Contents/Resources/content/textures/ui/backpack"
+# Path 2: The MenuBar folder
+MENU_DIR="/Applications/Roblox.app/Contents/Resources/content/textures/ui/MenuBar"
 
-# 2. A safe folder to download and store your custom files locally
-DL_DIR="$HOME/Documents/RobloxBackpackBackup"
-
-# Create the backup/download directory if it doesn't exist
+# Local cache folder
+DL_DIR="$HOME/Downloads/RobloxBackpackBackup"
 mkdir -p "$DL_DIR"
 
-echo "============================================="
-echo " Starting Roblox Backpack Texture Replacer "
-echo "============================================="
-
-# 3. Define the list of files to download (using the proper raw GitHub URLs)
-# Format is: "URL|Local_Filename"
+# List of files to download (URL|Local_Filename)
 FILES=(
     "https://raw.githubusercontent.com/SingleHandedlyStupid/rblxBackpack/main/Backpack.png|Backpack.png"
     "https://raw.githubusercontent.com/SingleHandedlyStupid/rblxBackpack/main/Backpack%402x.png|Backpack@2x.png"
-    "https://raw.githubusercontent.com/SingleHandedlyStupid/rblxBackpack/main/Backpack_down.png|Backpack_Down.png"
-    "https://raw.githubusercontent.com/SingleHandedlyStupid/rblxBackpack/main/Backpack_down%402x.png|Backpack_Down@2x.png"
+    "https://raw.githubusercontent.com/SingleHandedlyStupid/rblxBackpack/main/Backpack_down.png|Backpack_down.png"
+    "https://raw.githubusercontent.com/SingleHandedlyStupid/rblxBackpack/main/Backpack_down%402x.png|Backpack_down@2x.png"
 )
 
-# --- STEP 1: DOWNLOAD NEW TEXTURES ---
+echo "--- Downloading Latest Textures ---"
 for ITEM in "${FILES[@]}"; do
     URL="${ITEM%%|*}"
     FILENAME="${ITEM##*|}"
-    
-    # Download the files to your local folder if they aren't there yet
-    if [ ! -f "$DL_DIR/$FILENAME" ]; then
-        echo " Downloading $FILENAME from GitHub..."
-        curl -L "$URL" -o "$DL_DIR/$FILENAME"
-    else
-        echo " $FILENAME already downloaded locally."
-    fi
+    curl -L "$URL" -o "$DL_DIR/$FILENAME" -s
 done
 
-# --- STEP 2: REPLACE THEM IN ROBLOX ---
-echo ""
-echo "Moving custom textures into the Roblox folder..."
-echo "⚠️ You may be prompted to enter your Mac password because this modifies an App."
-echo ""
+echo "--- Applying Textures (Admin password may be required) ---"
 
-# Loop again to copy them over into Roblox using administrative permissions (sudo)
+# 1. Replace the standard 4 files in the UI directory
 for ITEM in "${FILES[@]}"; do
     FILENAME="${ITEM##*|}"
-    
-    if [ -f "$DL_DIR/$FILENAME" ]; then
-        # sudo cp forces the file overwrite even in protected folders
-        sudo cp "$DL_DIR/$FILENAME" "$TARGET_DIR/$FILENAME"
-        echo "✓ Replaced: $FILENAME"
-    else
-        echo "✗ Error: Missing downloaded file for $FILENAME"
-    fi
+    # Use sudo to overwrite files in /Applications
+    sudo cp "$DL_DIR/$FILENAME" "$UI_DIR/$FILENAME"
+    echo "Done: $UI_DIR/$FILENAME"
 done
 
-echo ""
-echo "✨ Success! Your custom backpack icons are ready. Restart Roblox to see them."
+# 2. Specifically replace icon__backpack.png with your backpack_down.png
+# We use the copy we just downloaded to cache
+if [ -f "$DL_DIR/Backpack_down.png" ]; then
+    sudo cp "$DL_DIR/Backpack_down.png" "$MENU_DIR/icon__backpack.png"
+    echo "Done: $MENU_DIR/icon__backpack.png (Replaced with Backpack_down)"
+fi
+
+echo "--- Finished! Restart Roblox to see changes. ---"
