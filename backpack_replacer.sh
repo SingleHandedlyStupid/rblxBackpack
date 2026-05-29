@@ -1,9 +1,25 @@
 #!/bin/bash
 
-UI_DIR="~/Applications/Roblox.app/Contents/Resources/content/textures/Cursors/KeyboardMouse"
-FIND_DIR="~/Documents"
+# Use the $HOME variable to ensure it finds your user folder
+UI_DIR="/Applications/Roblox.app/Contents/Resources/content/textures/Cursors/KeyboardMouse"
+SOURCE_FILE="$HOME/Documents/cursor.png"
 
-sudo cp "$FIND_DIR/cursor.png" "$UI_DIR/ArrowFarCursor.png"
-sudo cp "$FIND_DIR/cursor.png" "$UI_DIR/ArrowCursor.png"
+# Check if the source cursor exists
+if [ ! -f "$SOURCE_FILE" ]; then
+    echo "❌ Error: cursor.png not found in Documents!"
+    exit 1
+fi
 
-echo "--- Finished! Restart Roblox to see changes. ---"
+# Check if Roblox is installed
+if [ ! -d "$UI_DIR" ]; then
+    echo "❌ Error: Roblox path not found. Is it installed in Applications?"
+    exit 1
+fi
+
+echo "🚀 Applying custom cursor..."
+
+# Perform the copy with sudo
+sudo cp "$SOURCE_FILE" "$UI_DIR/ArrowFarCursor.png"
+sudo cp "$SOURCE_FILE" "$UI_DIR/ArrowCursor.png"
+
+echo "--- ✅ Finished! Restart Roblox to see changes. ---"
