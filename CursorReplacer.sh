@@ -21,9 +21,7 @@ fi
 echo "------------------------------------------------"
 
 # 2. Ask to continue with the switch (Split into echo + read for reliability)
-echo -n "Do you want to apply the custom cursor? (y/n): "
-sleep 1
-read choice
+read -p "Do you want to proceed? (y/n) " choice
 
 echo "------------------------------------------------"
 
