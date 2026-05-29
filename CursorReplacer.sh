@@ -10,4 +10,5 @@ FIND_DIR="$HOME/Downloads"
 sudo cp "$FIND_DIR/cursor.png" "$UI_DIR/ArrowFarCursor.png"
 sudo cp "$FIND_DIR/cursor.png" "$UI_DIR/ArrowCursor.png"
 
-echo "--- Finished! Restart Roblox to see changes. ---"
+echo "--- Finished! Restarting Roblox to see changes. ---"
+killall "Roblox"
