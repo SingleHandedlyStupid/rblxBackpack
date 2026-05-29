@@ -4,7 +4,7 @@
 # Path 1: The original UI folder
 UI_DIR="/Applications/Roblox.app/Contents/Resources/content/textures/ui/backpack"
 # Path 2: The MenuBar folder
-MENU_DIR="/Applications/Roblox.app/Contents/Resources/content/textures/ui/MenuBar"
+MENU_DIR="/Applications/Roblox.app/Contents/Resources/content/textures/MenuBar"
 
 # Local cache folder
 DL_DIR="$HOME/Downloads/RobloxBackpackBackup"
@@ -39,7 +39,6 @@ done
 # We use the copy we just downloaded to cache
 if [ -f "$DL_DIR/Backpack_down.png" ]; then
     sudo cp "$DL_DIR/Backpack_down.png" "$MENU_DIR/icon__backpack.png"
-    sudo cp "$DL_DIR/Backpack_down.png" "/Applications/Roblox.app/Contents/Resources/content/textures/MenuBar/icon__backpack.png"
     echo "Done: $MENU_DIR/icon__backpack.png (Replaced with Backpack_down)"
 fi
 
