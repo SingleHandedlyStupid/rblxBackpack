@@ -11,4 +11,4 @@ sudo cp "$FIND_DIR/cursor.png" "$UI_DIR/ArrowFarCursor.png"
 sudo cp "$FIND_DIR/cursor.png" "$UI_DIR/ArrowCursor.png"
 
 echo "--- Finished! Restarting Roblox to see changes. ---"
-killall "Roblox"
+killall Roblox
