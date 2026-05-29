@@ -21,7 +21,8 @@ fi
 echo "------------------------------------------------"
 
 # 2. Ask to continue with the switch (Split into echo + read for reliability)
-read -p "Do you want to proceed? (y/n) " choice
+sleep 1
+read -r -p "Do you want to proceed? (y/n): " choice
 
 echo "------------------------------------------------"
 
